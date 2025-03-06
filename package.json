@@ -1,0 +1,17 @@
+{
+  "name": "frontend-tribe-single-page-dev-portfolio-resource-bundle",
+  "version": "1.0.0",
+  "description": "Welcome to the Single Page Dev Portfolio Resource Bundle! This package contains everything you need to create a stunning, interactive portfolio using React, Next.js, TailwindCSS, and Framer Motion.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodeman": "^1.1.2",
+    "nodemon": "^3.1.9"
+  }
+}
