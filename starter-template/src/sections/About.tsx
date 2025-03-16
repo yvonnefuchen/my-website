@@ -116,7 +116,7 @@ export const AboutSection = () => {
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start py-5">
           <Image src={ProfileImage} alt="Profile picture" width={600} className="w-full md:w-1/2 lg:w-1/3 mx-auto md:mx-0" />
           <div className="flex flex-col sm:grid-cols-1 md:w-1/2 lg:w-2/3">
-            <h3 className="font-serif text-3xl py-5 text-center md:text-left">Hi, I'm Fu👋🏽 </h3>
+            <h3 className="font-serif text-3xl py-5 text-center md:text-left">Hi, I&apos;m Fu👋🏽 </h3>
             <h1 className="text-center md:text-left">A{" "}
               <b className="font-semibold tracking-widest bg-gradient-to-r from-emerald-300 to-sky-400 text-center bg-clip-text text-transparent">UX Designer</b> with 3P powers
               <div className="flex justify-center md:justify-start py-5">

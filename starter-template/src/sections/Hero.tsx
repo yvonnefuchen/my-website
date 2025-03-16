@@ -76,7 +76,7 @@ export const HeroSection = () => {
 
         <div className='max-w-lg mx-auto'>
           <h1 className='font-serif text-2xl md:text-5xl text-center mt-7 tracking-wide'>
-            Welcome to Fu's PM & UX Design Space</h1>
+            Welcome to Fu&apos;s PM & UX Design Space</h1>
           <p className='mt-4 text-center font-serif text-emerald-200 tracking-widest' >Where Ideas Take Flight</p>
           <p className='mt-4 text-center text-white/70 '>
             I specialized in transforming complex problems into desinged solutions. Enjoying crafting products, interactions and stories.
@@ -91,7 +91,7 @@ export const HeroSection = () => {
 
           <a href="https://www.linkedin.com/in/yvonne-fu-chen/" target="_blank" className="inline-flex items-center gap-2 border border-white/30 bg-white text-gray-900 px-6 h-12 rounded-lg">
             <span>👋🏽</span>
-            <span className="font-semibold">Let's Connect</span>
+            <span className="font-semibold">Let&apos;s Connect</span>
           </a>
         </div>
       </div>
