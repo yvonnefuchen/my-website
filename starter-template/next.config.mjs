@@ -46,8 +46,4 @@ const nextConfig = {
 };
 
 
-export default {
-  output: 'export',
-  distDir: 'out',
-
-};
+export default nextConfig;
