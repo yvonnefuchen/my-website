@@ -96,10 +96,16 @@ export const ProjectsSection = () => {
                       </li>
                     ))}
                   </ul>
-                  <Link href={project.link} target="_blank" rel="noopener noreferrer" className="bg-white text-gray-950 h-12 w-full md:w-auto px-6 rounded-xl font-semibold inline-flex items-center justify-center gap-2 mt-8">
-                    <span>Take A Look</span>
-                    <ArrowUpRightIcon className="size-4" />
-                  </Link>
+                 <Link
+  href={project.link}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="bg-white text-gray-950 h-12 w-full md:w-auto px-6 rounded-xl font-semibold inline-flex items-center justify-center gap-2 mt-8
+  hover:bg-gray-100 hover:shadow-lg transition-all duration-300"
+>
+  <span>Take A Look</span>
+  <ArrowUpRightIcon className="size-4" />
+</Link>
                 </div>
                 <div className="relative">
                   <Image
