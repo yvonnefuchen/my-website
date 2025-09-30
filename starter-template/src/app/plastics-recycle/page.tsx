@@ -156,7 +156,7 @@ const ALL_TRANSLATIONS: Record<LanguageKey, Translation> = {
     ...CORE_TRANSLATIONS,
     es: CORE_TRANSLATIONS.en, 
     fr: CORE_TRANSLATIONS.en, 
-};
+} as Record<LanguageKey, Translation>;
 
 const PLASTIC_ITEMS: PlasticItem[] = [
     {
