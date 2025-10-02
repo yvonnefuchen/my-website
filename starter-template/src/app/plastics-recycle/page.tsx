@@ -3,6 +3,7 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import Image from "next/image";
+import type { StaticImageData } from 'next/image';
 
 // ----------  TYPES  ----------
 type LanguageKey = 'en' | 'ja' | 'zh';
@@ -52,7 +53,7 @@ interface Translation {
 interface PlasticItem {
     id: number;
     name: string;
-    image: string; // SVG data URL
+    image: StaticImageData
     recyclable: boolean;
     category: string;
 }
@@ -560,21 +561,6 @@ export default function PlasticDetective() {
 <p style={{ marginBottom: '20px', color: '#000', fontWeight: 'bold' }}>
   Click every item that CANNOT be recycled curbside.
 </p>
-          {/*  ONLY #7 OTHER  –  one button  */}
-          <div style={styles.clawGrid}>
-            {PLASTIC_ITEMS.filter((it) => it.category === '#7 OTHER').map((it) => {
-              const isOut = clawRemoved.includes(it.name);
-              return (
-                <button
-                style={{ ...styles.recycleButton, ...styles.recycleYes, ...(allRemoved ? {} : { opacity: 0.5, cursor: 'not-allowed' }) }}
-                onClick={() => window.location.assign('/')}
-              >
-                {allRemoved ? t.clawContinue : t.clawFinish}
-              </button>
-              );
-            })}
-          </div>
-      
           <div style={{ ...styles.clawProgress, color: '#000', fontWeight: 'bold' }}>
   {t.clawRemoved}: {clawRemoved.length} / 1 {t.clawTotalItems}
 </div>
