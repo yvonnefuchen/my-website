@@ -28,7 +28,6 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
       defaults: '2025-11-30',
       capture_pageview: false,
-      capture_screenview: false
     })
   }, [])
 

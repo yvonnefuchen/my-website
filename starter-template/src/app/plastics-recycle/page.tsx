@@ -501,7 +501,7 @@ export default function PlasticDetective() {
                 });
             }, 2000);
         },
-        [currentItem, t]
+        [currentItem, t, posthog, gameState.score]
     );
 
     // ----------  SCREENS  ----------
