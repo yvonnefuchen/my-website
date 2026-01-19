@@ -1,9 +1,10 @@
 // PlasticDetective.tsx
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import Image from "next/image";
 import type { StaticImageData } from 'next/image';
+import { usePostHog } from 'posthog-js/react';
 
 // ----------  TYPES  ----------
 type LanguageKey = 'en' | 'ja' | 'zh';
@@ -90,7 +91,7 @@ const TRANSLATIONS: Record<LanguageKey, Translation> = {
         yesButton: '✓ YES – Recyclable',
         noButton: '✗ NO – Not Recyclable',
         resultsTitle: 'Congrats🎉, Proceed to Claw Machine.',
-        finalScore:  'Take the hard-to-recycle item out.',
+        finalScore: 'Take the hard-to-recycle item out.',
         playAgainButton: 'Play Again',
         learnMoreButton: 'Learn More',
         correctFeedback: 'Correct!',
@@ -180,11 +181,11 @@ const TRANSLATIONS: Record<LanguageKey, Translation> = {
 // ----------  PLASTIC ITEMS  ----------
 const PLASTIC_ITEMS: PlasticItem[] = [
     {
-      id: 1,
-      name: 'Water Bottle',
-      image: PET1_REAL, 
-      recyclable: true,
-      category: 'PET #1',
+        id: 1,
+        name: 'Water Bottle',
+        image: PET1_REAL,
+        recyclable: true,
+        category: 'PET #1',
     },
     {
         id: 2,
@@ -435,10 +436,22 @@ export default function PlasticDetective() {
     const nonRecyclables = PLASTIC_ITEMS.filter((it) => !it.recyclable);
     const allRemoved = clawRemoved.length === nonRecyclables.length;
 
+    const posthog = usePostHog(); // Initialize the tool
+
+    useEffect(() => {
+        if (posthog) {
+            posthog.capture('screen_viewed', {
+                screen_name: gameState.showScreen,
+                language: currentLanguage
+            });
+        }
+    }, [gameState.showScreen, posthog, currentLanguage]);
+
     // ----------  GAME LOGIC  ----------
     const startGame = useCallback(() => {
+        posthog?.capture('game_started'); // Add this line
         setGameState((p) => ({ ...p, showScreen: 'game', feedback: { message: '', type: null } }));
-    }, []);
+    }, [posthog]); // Add posthog to this dependency array
 
     const playAgain = useCallback(() => {
         setGameState(INITIAL_GAME_STATE);
@@ -461,6 +474,12 @@ export default function PlasticDetective() {
                 msg = `✗ ${t.incorrectFeedback}  ${currentItem.name} (${currentItem.category})  ${currentItem.recyclable ? 'can be recycled!' : 'cannot be recycled curbside.'
                     }`;
 
+            posthog?.capture('item_answered', {
+                item_name: currentItem.name,
+                is_correct: isCorrect,
+                score_so_far: gameState.score
+            });
+
             setGameState((p) => ({
                 ...p,
                 score: p.score + (isCorrect ? 10 : 0),
@@ -472,8 +491,12 @@ export default function PlasticDetective() {
             setTimeout(() => {
                 setGameState((p) => {
                     const next = p.currentQuestionIndex + 1;
-                    if (next >= PLASTIC_ITEMS.length)
+                    if (next >= PLASTIC_ITEMS.length) {
+                        posthog?.capture('game_completed', {
+                            final_total_score: gameState.score + (isCorrect ? 10 : 0)
+                        });
                         return { ...p, showScreen: 'clawMachine', feedback: { message: '', type: null } };
+                    }
                     return { ...p, currentQuestionIndex: next, feedback: { message: '', type: null } };
                 });
             }, 2000);
@@ -555,24 +578,24 @@ export default function PlasticDetective() {
 
     const ClawMachineScreen = (
         <div id="clawMachineScreen">
-         <h2 style={{ fontSize: '1.8em', marginBottom: '15px', color: '#000', fontWeight: 'bold' }}>
-  Proceed to Claw Machine Game 🦾 - Remove the Odd
-</h2>
-<p style={{ marginBottom: '20px', color: '#000', fontWeight: 'bold' }}>
-  Click every item that CANNOT be recycled curbside.
-</p>
-          <div style={{ ...styles.clawProgress, color: '#000', fontWeight: 'bold' }}>
-  {t.clawRemoved}: {clawRemoved.length} / 1 {t.clawTotalItems}
-</div>
-      
-          <button
-            style={{ ...styles.recycleButton, ...styles.recycleYes}}
-            onClick={() => setGameState((p) => ({ ...p, score: p.score + 5, showScreen: 'results' }))}
-          >
-            {t.clawFinish}
-          </button>
+            <h2 style={{ fontSize: '1.8em', marginBottom: '15px', color: '#000', fontWeight: 'bold' }}>
+                Proceed to Claw Machine Game 🦾 - Remove the Odd
+            </h2>
+            <p style={{ marginBottom: '20px', color: '#000', fontWeight: 'bold' }}>
+                Click every item that CANNOT be recycled curbside.
+            </p>
+            <div style={{ ...styles.clawProgress, color: '#000', fontWeight: 'bold' }}>
+                {t.clawRemoved}: {clawRemoved.length} / 1 {t.clawTotalItems}
+            </div>
+
+            <button
+                style={{ ...styles.recycleButton, ...styles.recycleYes }}
+                onClick={() => setGameState((p) => ({ ...p, score: p.score + 5, showScreen: 'results' }))}
+            >
+                {t.clawFinish}
+            </button>
         </div>
-      );
+    );
 
     const ResultsScreen = (
         <div id="resultsScreen">
